@@ -25,4 +25,10 @@ RUN pip install saspy && \
     pip install sas_kernel && \
     pip install nbgrader && \ 
     fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+    fix-permissions /home/$NB_USER && \
+    jupyter nbextension install --py sas_kernel.showSASLog && \
+    jupyter nbextension enable sas_kernel.showSASLog --py && \
+    jupyter nbextension install --py sas_kernel.theme && \
+    jupyter nbextension enable sas_kernel.theme --py
+
+
