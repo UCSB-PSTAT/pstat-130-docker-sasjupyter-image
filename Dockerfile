@@ -6,6 +6,17 @@ LABEL maintainer="Patrick Windmiller <sysadmin@pstat.ucsb.edu>"
 
 USER root
 
+RUN pip install saspy && \
+    pip install sas_kernel && \
+    pip install nbgrader && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
+RUN jupyter nbextension install --py sas_kernel.showSASLog && \
+    jupyter nbextension enable sas_kernel.showSASLog --py && \
+    jupyter nbextension install --py sas_kernel.theme && \
+    jupyter nbextension enable sas_kernel.theme --py
+
 #Install required libs for SAS
 RUN echo "deb http://security.ubuntu.com/ubuntu xenial-security main" >> /etc/apt/sources.list
 RUN apt-get update && \
@@ -20,15 +31,3 @@ ADD SASHomeTar.tar /
 RUN chown -R $NB_USER:users /opt/sasinside/SASHome 
 
 USER $NB_UID
-
-RUN pip install saspy && \
-    pip install sas_kernel && \
-    pip install nbgrader && \ 
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER && \
-    jupyter nbextension install --py sas_kernel.showSASLog && \
-    jupyter nbextension enable sas_kernel.showSASLog --py && \
-    jupyter nbextension install --py sas_kernel.theme && \
-    jupyter nbextension enable sas_kernel.theme --py
-
-
